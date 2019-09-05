@@ -1,0 +1,42 @@
+#display-container {
+  margin: 1.2em auto;
+  width: 24em;
+  height: 15em;
+  background-color: #c51f1f;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -15em;
+  padding: 0 15em;
+  align-items: center;
+}
+
+.timer {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1vw;
+  text-align: center;
+}
+
+h1 {
+  margin-block-end: 0.5em;
+  font-size: 4em;
+}
+
+.btn {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 0.4em;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9em;
+}
+
+#start-btn:hover {
+  background-color: black;
+}
+
