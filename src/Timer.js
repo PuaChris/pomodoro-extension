@@ -7,34 +7,32 @@ class Timer extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      minutes: 25,
-      seconds: "00"
+      minutes: 0,
+      seconds: "02"
     };
     // It's because of the way Javacsript handles contexts of functions.
     // Essentially, if not calling the function directly from the object
     // and that function is not bounded to any context, it loses the context
     this.tick = this.tick.bind(this);
   }
-
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-
+  
   tick() {
     if (this.state.minutes >= 0) {
-      if (this.state.minutes === 0 && this.state.seconds === 0) {
+      if (this.state.minutes <= 0 && this.state.seconds <= 0) {
+        clearInterval(this.timer);
         return;
       }
-
-      if (this.state.seconds <= 0) {
+      else if (this.state.seconds <= 0) {
         let prevMinute = this.state.minutes;
         this.setState({
           minutes: prevMinute - 1,
           seconds: 60
         });
       }
-
-      if (this.state.seconds < 10) {
+      else if (this.state.seconds < 10) {
         this.setState({ seconds: "0" + (this.state.seconds - 1) });
       } else {
         this.setState({ seconds: this.state.seconds - 1 });
@@ -56,7 +54,7 @@ class Timer extends Component {
   resetTimerBtn() {
     clearInterval(this.timer);
     this.setState({
-      minutes: 25,
+      minutes: this.props.minutes,
       seconds: "00"
     });
   }
@@ -72,7 +70,7 @@ class Timer extends Component {
         <div className="btn-group-lg">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-success"
             id="start-btn"
             onClick={e => this.startTimerBtn(e)}
           >

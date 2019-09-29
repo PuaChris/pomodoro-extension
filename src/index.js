@@ -5,5 +5,5 @@ import Timer from './Timer';
 import './style.css';
 
 
-ReactDOM.render(<Pomodoro />, document.getElementById('root'));
-ReactDOM.render(<Timer />, document.getElementById('root'));
+ReactDOM.render(<Pomodoro />, document.getElementById('display-container'));
+// ReactDOM.render(<Timer />, document.getElementById('display-container'));
