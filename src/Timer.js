@@ -7,8 +7,9 @@ class Timer extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      minutes: 0,
-      seconds: "02"
+      minutes: this.props.minutes,
+      seconds: "00",
+      isFinished: false
     };
     // It's because of the way Javacsript handles contexts of functions.
     // Essentially, if not calling the function directly from the object
@@ -18,24 +19,33 @@ class Timer extends Component {
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  
+
   tick() {
     if (this.state.minutes >= 0) {
       if (this.state.minutes <= 0 && this.state.seconds <= 0) {
         clearInterval(this.timer);
+        this.setState({isFinished: true})
         return;
       }
       else if (this.state.seconds <= 0) {
         let prevMinute = this.state.minutes;
         this.setState({
           minutes: prevMinute - 1,
-          seconds: 60
+          seconds: 59,
+          isFinished: false
         });
       }
       else if (this.state.seconds < 10) {
-        this.setState({ seconds: "0" + (this.state.seconds - 1) });
-      } else {
-        this.setState({ seconds: this.state.seconds - 1 });
+        this.setState({ 
+          seconds: "0" + (this.state.seconds - 1),
+          isFinished: false
+        });
+      } 
+      else {
+        this.setState({
+           seconds: this.state.seconds - 1, 
+           isFinished: false
+          });
       }
     }
   }

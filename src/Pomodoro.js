@@ -12,27 +12,42 @@ class Pomodoro extends Component {
             isShortBreak: false,
             isLongBreak: false
         }
+        this.pomodoroHandler = this.pomodoroHandler.bind(this);
+        this.shortBreakHandler = this.shortBreakHandler.bind(this);
+        this.longBreakHandler = this.longBreakHandler.bind(this);
+    }
+    pomodoroHandler(){
+        const shortBreakTime = this.state.shortBreakTime;
+        this.setState(
+            {
+                numShortBreaks: this.numShortBreaks + 1
+            }
+        )
+    }
+    shortBreakHandler(){
 
     }
+    longBreakHandler(){
 
-
+    }
     render() {
-        if (this.state.isShortBreak){
+        const isShortBreak = this.state.isShortBreak;
+        const isLongBreak = this.state.isLongBreak;
+
+        if (isShortBreak){
             return (
                 <div className="Pomodoro">
                     <Timer minutes={this.state.shortBreakTime}/>
                 </div>
             )
         }
-
-        else if (this.state.isLongBreak){
+        else if (isLongBreak){
             return (
                 <div className="Pomodoro">
                     <Timer minutes={this.state.longBreakTime}/>
                 </div>
             )
         }
-
         else {
             return (
                 <div className="Pomodoro">
