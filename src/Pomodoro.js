@@ -12,20 +12,34 @@ class Pomodoro extends Component {
             isShortBreak: false,
             isLongBreak: false
         }
+
+        // * No need to bind if using the Javascript function syntax (?)
         this.pomodoroHandler = this.pomodoroHandler.bind(this);
         this.shortBreakHandler = this.shortBreakHandler.bind(this);
         this.longBreakHandler = this.longBreakHandler.bind(this);
     }
-    pomodoroHandler(){
+    pomodoroHandler = () => {
         const shortBreakTime = this.state.shortBreakTime;
+        const isFinished = this.state.isFinished;
+
         this.setState(
             {
-                numShortBreaks: this.numShortBreaks + 1
+                minutes: shortBreakTime
             }
-        )
+        );
+
+        if (isFinished){
+            this.setState(
+                {
+                    numShortBreaks: this.numShortBreaks + 1
+
+                }
+            )
+        }
+        
     }
     shortBreakHandler(){
-
+        
     }
     longBreakHandler(){
 
@@ -37,7 +51,7 @@ class Pomodoro extends Component {
         if (isShortBreak){
             return (
                 <div className="Pomodoro">
-                    <Timer minutes={this.state.shortBreakTime}/>
+                    <Timer pomodoroHandler = {this.state.pomodoroTime}/>
                 </div>
             )
         }
@@ -59,10 +73,3 @@ class Pomodoro extends Component {
 }
 
 export default Pomodoro
-
-
-/*
-When timer is finished, how does the child component
-let the parent component it's finished?
-
-*/

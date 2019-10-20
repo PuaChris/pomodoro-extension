@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { thisTypeAnnotation } from '@babel/types';
-
 // ! Source code: https://codepen.io/jurekbarth/pen/pgYGBm
 
 class Timer extends Component {
@@ -10,7 +8,10 @@ class Timer extends Component {
       minutes: this.props.minutes,
       seconds: "00",
       isFinished: false
-    };
+    };    
+
+    // var pomodoroHandler = this.props.pomodoroHandler();
+    
     // It's because of the way Javacsript handles contexts of functions.
     // Essentially, if not calling the function directly from the object
     // and that function is not bounded to any context, it loses the context
@@ -20,7 +21,7 @@ class Timer extends Component {
     clearInterval(this.timer);
   }
 
-  tick() {
+  tick = () => {
     if (this.state.minutes >= 0) {
       if (this.state.minutes <= 0 && this.state.seconds <= 0) {
         clearInterval(this.timer);
@@ -55,6 +56,7 @@ class Timer extends Component {
 
     clearInterval(this.timer);
     this.timer = setInterval(this.tick, 1000);
+    // var pomodoroHandler = this.props.pomodoroHandler();
   }
 
   pauseTimerBtn() {
