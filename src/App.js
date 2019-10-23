@@ -10,7 +10,8 @@ class App extends Component {
             shortBreakTime: 5,
             longBreakTime: 30,
             numShortBreaks: 0,
-            timerType: "pomodoro",
+            timerStates: ["Pomodoro", "ShortBreak", "LongBreak"],
+            timerType: "Pomodoro",
             isFinished: true
         }
 
@@ -18,6 +19,21 @@ class App extends Component {
         // this.pomodoroHandler = this.pomodoroHandler.bind(this);
         // this.shortBreakHandler = this.shortBreakHandler.bind(this);
         // this.longBreakHandler = this.longBreakHandler.bind(this);
+    }
+
+    changeTimerType = () => {
+        if (this.state.timerType === this.state.timerStates[0] && this.state.isFinished){
+            if (this.state.numShortBreaks % 4 === 0){
+                this.setState({
+                    timerType: this.state.timerStates[2]
+                })
+            }
+            else {
+                this.setState({
+                    timerType: this.state.timerStates[1]
+                })
+            }
+        }
     }
 
     decrementMinute = () => {
@@ -39,6 +55,7 @@ class App extends Component {
                 <Timer  minutes={this.state.minutes}
                         decrementMinute={this.decrementMinute}
                         pomodoroHandler={this.pomodoroHandler}
+                        timerStates={this.state.timerStates}
                         timerType={this.state.timerType}
                         isFinished={this.state.isFinished} 
                         // TODO: Complete and pass on additional handlers

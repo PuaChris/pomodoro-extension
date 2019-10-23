@@ -8,7 +8,7 @@ class Timer extends Component {
       seconds: "00"
     };    
 
-    if (this.props.timerType === "pomodoro"){
+    if (this.props.timerType === this.props.timerStates[0]){
       this.props.pomodoroHandler();
     }
     
@@ -23,11 +23,14 @@ class Timer extends Component {
 
   tick = () => {
     if (this.props.minutes >= 0) {
+      this.props.isFinished = false;
+
       if (this.props.minutes <= 0 && this.state.seconds <= 0) {
         clearInterval(this.timer);
-        this.setState({isFinished: true})
+        this.props.isFinished = true;
         return;
       }
+      
       else if (this.state.seconds <= 0) {
         this.props.decrementMinute();
 
@@ -35,6 +38,7 @@ class Timer extends Component {
           seconds: 59
         });
       }
+
       // TODO: Optimzation opportunity -> figure out a way to not manually insert a 0 in the timer
       else if (this.state.seconds < 10) {
         this.setState({ 
@@ -63,7 +67,7 @@ class Timer extends Component {
   resetTimerBtn = () => {
     clearInterval(this.timer);
     
-    if (this.props.timerType === "pomodoro"){
+    if (this.props.timerType === this.props.timerStates[0]){
       this.props.pomodoroHandler();
     }
 
