@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Timer from './Timer.js'
 import * as Constants from './constants'
+import { thisExpression } from '@babel/types';
 
 class App extends Component {
     constructor(props) {
@@ -8,45 +9,68 @@ class App extends Component {
         this.state = {
             minutes: 0,
             pomodoroTime: 1,
-            shortBreakTime: 5,
-            longBreakTime: 30,
+            shortBreakTime: 2,
+            longBreakTime: 3,
+            numPomodoros: 0,
             numShortBreaks: 0,
-            // timerStates: ["Pomodoro", "ShortBreak", "LongBreak"],
             timerType: Constants.POMODORO,
             isFinished: true
         }
     }
 
+    startTimer = () => {
+        this.setState({
+            isFinished: false
+        })
+    }
 
+    endTimer = () => {
+        this.setState({
+            isFinished: true
+        })
+    }
 
     changeTimerType = () => {
-        if (this.state.isFinished){
-            if (this.state.timerType === Constants.POMODORO){
+        if (this.state.timerType === Constants.POMODORO){
 
-                // Assume 4 cycles are needed to go into long break
-                if (this.state.numShortBreaks % 4 === 0){
-                    this.setState({
-                        timerType: Constants.LONGBREAK
-                    })
-                }
-    
-                // Short Break
-                else {
-                    this.setState({
-                        timerType: Constants.SHORTBREAK
-                    })
-                }
-            }
-    
-            // Must be in one of the two break states
-            else {
-    
-            }
-    
+            // TODO: Only increment pomdoros and short breaks when the timer 
+            // TODO: actually finishes, not when the user changes states
             this.setState({
-                isFinished: false
+                numPomodoros: this.state.numPomodoros + 1
             })
-        }   
+
+            // Assume 4 cycles are needed to go into long break
+            if (this.state.numPomodoros > 0 && this.state.numPomodoros % 4 === 0){
+                this.setState({
+                    timerType: Constants.LONGBREAK
+                })
+            }
+
+            // Short Break
+            else {
+                this.setState({
+                    timerType: Constants.SHORTBREAK
+                })
+            }
+        }
+
+        // Must be in one of the two break states
+        // * If user wants to go into POMODORO state, this still works out
+        // * because it firsts goes into a break state before reading the 
+        // * new state set by the user
+        else {
+
+            if (this.state.timerType === Constants.SHORTBREAK){
+                this.setState({
+                    numShortBreaks: this.state.numShortBreaks + 1
+                })
+            }
+            this.setState({
+                timerType: Constants.POMODORO
+            })
+        }
+
+        this.setTimer(); 
     }
 
     decrementMinute = () => {
@@ -76,6 +100,13 @@ class App extends Component {
                 minutes: this.state.longBreakTime
             }); 
         }
+
+        // State change error catch
+        else {
+            this.setState({
+                minutes: -69
+            }); 
+        }
     }
 
     render() {
@@ -87,7 +118,9 @@ class App extends Component {
                     setTimer={this.setTimer}
                     changeTimerType={this.changeTimerType}
                     timerType={this.state.timerType}
-                    isFinished={this.state.isFinished} />
+                    isFinished={this.state.isFinished} 
+                    startTimer={this.startTimer}
+                    endTimer={this.endTimer}/>
             </div>
         )
     }

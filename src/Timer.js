@@ -17,6 +17,7 @@ class Timer extends Component {
       // Timer is finished
       if (this.props.minutes <= 0 && this.state.seconds <= 0) {
         clearInterval(this.timer);
+        this.props.endTimer();
         this.props.changeTimerType();
         return;
       }
@@ -25,7 +26,7 @@ class Timer extends Component {
       else if (this.state.seconds <= 0) {
         this.props.decrementMinute();
         this.setState({
-          seconds: 2
+          seconds: 1
         });
       }
 
@@ -48,8 +49,8 @@ class Timer extends Component {
 
   startTimerBtn = (e) => {
     // e.currentTarget.style.backgroundColor = "#ccc";
-
     clearInterval(this.timer);
+    this.props.startTimer();
     this.timer = setInterval(this.tick, 1000);
   }
 
