@@ -5,5 +5,5 @@ export const LONGBREAK = 'longBreak'
 
 // Timer values
 export const STOPPED = 'stopped'
-export const RUNNING = 'running'
+export const RESUME = 'resume'
 export const PAUSED = 'paused'
