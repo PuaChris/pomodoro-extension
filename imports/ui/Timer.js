@@ -43,6 +43,7 @@ export default class Timer extends Component {
         this.setState({
             state: Constants.RESUME
         });
+        this.tick();
     }
 
     pause() {
@@ -53,7 +54,10 @@ export default class Timer extends Component {
 
     stop() {
         this.setState({
-            state: Constants.STOPPED
+            state: Constants.STOPPED,
+            duration: this.props.duration,
+            minutes: Math.floor(this.props.duration / 60),
+            seconds: this.props.duration % 60
         });
     }
 

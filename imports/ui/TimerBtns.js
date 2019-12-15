@@ -4,7 +4,6 @@ export default class TimerBtns extends Component {
     constructor(props){
         super(props);
     }
-
     render() {
         return (
             <div className="btn-group-lg">
