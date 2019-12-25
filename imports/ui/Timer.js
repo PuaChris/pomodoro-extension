@@ -8,8 +8,12 @@ import TimerBtns from './TimerBtns';
 export default class Timer extends Component {
     constructor(props){
         super(props);
+
+        if (this.props.duration === NaN) {
+            throw new Error("Duration value is NaN");
+        }
         this.state = {
-            state: Constants.STOPPED,
+            timerState: Constants.STOPPED,
             duration: this.props.duration,
             minutes: Math.floor(this.props.duration / 60),
             seconds: this.props.duration % 60
@@ -18,7 +22,7 @@ export default class Timer extends Component {
         this.pause = this.pause.bind(this);
         this.stop = this.stop.bind(this);
     }
-    
+
     componentDidMount() {
         this.timerID = setInterval(() => this.timerController(), 1000);
     }
@@ -28,9 +32,9 @@ export default class Timer extends Component {
     }
 
     timerController() {
-        let state = this.state.state;
+        let timerState = this.state.timerState;
         let duration = this.state.duration;
-        if (state === Constants.RESUME && duration > 0) {
+        if (timerState === Constants.RESUME && duration > 0) {
             this.updateTimerValues(duration);
         }
         else if (duration <= 0) {
@@ -40,6 +44,9 @@ export default class Timer extends Component {
     }
 
     updateTimerValues(duration) {
+        if (duration === NaN) {
+            throw new Error("Duration value is NaN");
+        }
         this.setState({
             duration: duration - 1,
             minutes: Math.floor(duration / 60),
@@ -49,18 +56,18 @@ export default class Timer extends Component {
 
     updateTimerPhase() {
         let oldPhase = this.props.phase;
-        if (oldPhase === Constants.POMODORO){
+        if (oldPhase === Constants.FOCUS){
             this.props.updatePhaseToBreak();
         }
         else {
-            this.props.updatePhaseToPomodoro();
+            this.props.updatePhaseToFocus();
         }
     }
 
     // Button state controllers
     resume() {
         this.setState({
-            state: Constants.RESUME
+            timerState: Constants.RESUME
         });
         if (this.timerID == null) this.timerID = setInterval(() => this.timerController(), 1000);
     }
@@ -71,7 +78,7 @@ export default class Timer extends Component {
             this.timerID = null;
         } 
         this.setState({
-            state: Constants.PAUSED
+            timerState: Constants.PAUSED
         });
     }
 
@@ -81,7 +88,7 @@ export default class Timer extends Component {
             this.timerID = null;
         } 
         this.setState({
-            state: Constants.STOPPED,
+            timerState: Constants.STOPPED,
         });
         this.updateTimerValues(this.props.duration);
     }
