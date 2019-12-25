@@ -14,13 +14,19 @@ import Timer from './Timer';
 export default class App extends Component{
     constructor(props){
         super(props);
-        this.data;
+        this.UserData;
+        
+        db.collection("context").where("UserEmail", "==", Constants.USERID).get()
+        .then(QuerySnapShot => {
+            this.UserData = QuerySnapShot.docs.map(doc => doc.data());
+            console.log(this.UserData); // array of cities objects
 
-        this.state = {
-            phase: Constants.FOCUS,
-            duration: 3,
-            numPomodoros: 0
-        }
+            this.setState({
+                phase: Constants.FOCUS,
+                duration:  this.UserData[0].FocusLength,
+                numPomodoros: 0
+            });
+        });
 
         this.updatePhaseToFocus = this.updatePhaseToFocus.bind(this);
         this.updatePhaseToBreak = this.updatePhaseToBreak.bind(this);
@@ -40,20 +46,6 @@ export default class App extends Component{
         })
         .catch(function(error) {
             console.error("Error writing document: ", error);
-        });
-    }
-
-    componentDidMount() {
-        var data = db.collection("context").where("UserEmail", "==", Constants.USERID).get()
-        .then(QuerySnapShot => {
-            const data = QuerySnapShot.docs.map(doc => doc.data());
-            console.log(data); // array of cities objects
-            let UserEmail = data[0].UserEmail;
-            let FocusLength = data[0].FocusLength; 
-
-            this.setState({
-                duration: FocusLength
-            });
         });
     }
 
@@ -88,7 +80,7 @@ export default class App extends Component{
     }
     
     render() {
-        return (
+        return this.state && this.state.duration ? (
             <div className="timer-container">
                 <header>
                     <h1>Puamodoro Timer</h1>
@@ -101,7 +93,7 @@ export default class App extends Component{
                     <h2>Phase: {this.state.phase}</h2>
                 </header>
             </div>
-        );
+        ) : <span>Loading...</span>;
     }
 }
 
