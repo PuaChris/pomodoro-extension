@@ -1,4 +1,4 @@
 export function minutesToSeconds(minutes) {
     Number(minutes);
-    return Math.floor(minutes * 2);
+    return Math.floor(minutes * 60);
 }

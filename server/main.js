@@ -4,9 +4,6 @@ import { db } from '../imports/api/Context';
 Meteor.startup(() => {
     db.collection("context").doc("test").set({
         UserEmail: "testemail.com",
-        FocusLength: 2,
-        ShortBreakLength: 5,
-        LongBreakLength: 15,
         PomodorosHistory: {
             Date: new Date()
         }
