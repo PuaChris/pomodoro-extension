@@ -21,6 +21,38 @@ export default class App extends Component{
             duration: Helper.minutesToSeconds(Constants.FOCUS_LENGTH), 
         }
 
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+        var uiConfig = {
+            callbacks: {
+              signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                // User successfully signed in.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return true;
+              },
+              uiShown: function() {
+                // The widget is rendered.
+                // Hide the loader.
+                document.getElementById('loader').style.display = 'none';
+              }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: 'http://localhost:3000',
+            signInOptions: [
+              // Leave the lines as is for the providers you want to offer your users.
+              firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            ],
+            // * Terms of service url.
+            // tosUrl: '<your-tos-url>',
+            // * Privacy policy url.
+            // privacyPolicyUrl: '<your-privacy-policy-url>'
+          };
+          
+          // The start method will wait until the DOM is loaded.
+          ui.start('#firebaseui-auth-container', uiConfig);
+
         this.updatePhaseToFocus = this.updatePhaseToFocus.bind(this);
         this.updatePhaseToBreak = this.updatePhaseToBreak.bind(this);
         this.updateNumPomodoros = this.updateNumPomodoros.bind(this);
@@ -68,6 +100,8 @@ export default class App extends Component{
                     />
                     <h2>Phase: {this.state.phase}</h2>
                 </header>
+                <div id="firebaseui-auth-container"></div>
+                <div id="loader">Loading...</div>
             </div>
         ) : <span>Loading...</span>;
     }
