@@ -14,26 +14,12 @@ import Timer from './Timer';
 export default class App extends Component{
     constructor(props){
         super(props);
-        db.collection("context").where("UserEmail", "==", Constants.USERID).get()
-        .then(QuerySnapShot => {
-            let UserData = QuerySnapShot.docs.map(doc => doc.data());
-            if (UserData) {
-                this.setState({
-                    phase: Constants.FOCUS,
-                    duration: Helper.minutesToSeconds(UserData[0].FocusLength),
-                    numPomodoros: 0,
-                    isContextModified: false
-                });
-            }
-            else {
-                this.setState({
-                    userData: null,
-                    phase: Constants.FOCUS,
-                    duration: Constants.FOCUS_LENGTH,
-                    numPomodoros: 0
-                });
-            }
-        });
+        this.state = {
+            phase: Constants.FOCUS,
+            duration: Helper.minutesToSeconds(Constants.FOCUS_LENGTH),
+            numPomodoros: 0
+        };
+
         this.updatePhaseToFocus = this.updatePhaseToFocus.bind(this);
         this.updatePhaseToBreak = this.updatePhaseToBreak.bind(this);
         this.updateNumPomodoros = this.updateNumPomodoros.bind(this);
@@ -42,7 +28,8 @@ export default class App extends Component{
     updatePhaseToFocus() {
         this.setState({
             phase: Constants.FOCUS,
-            duration: Helper.minutesToSeconds(Constants.FOCUS_LENGTH)
+            duration: Helper.minutesToSeconds(Constants.FOCUS_LENGTH),
+            numPomodoros: 0
         });
     }
 
