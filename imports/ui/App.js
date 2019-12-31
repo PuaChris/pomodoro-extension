@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-import { db } from '../api/Context';
-import { Context } from '../api/_context';
-
 import * as Constants from '../resources/Constants';
 import * as Helper from '../resources/Helper';
 
@@ -14,11 +11,11 @@ export default class App extends Component{
         super(props);
         this.state = {
             phase: Constants.FOCUS,
-            duration: Helper.minutesToSeconds(Constants.FOCUS_LENGTH),
             numPomodoros: 0,
-            focusDuration: Constants.FOCUS_LENGTH,
-            shortBreakDuration: Constants.SHORTBREAK_LENGTH,
-            longBreakDuration: Constants.LONGBREAK_LENGTH
+            focusDuration: localStorage.getItem('focusDurationInStorage') ? localStorage.getItem('focusDurationInStorage') : Constants.FOCUS_LENGTH,
+            shortBreakDuration: localStorage.getItem('shortBreakDurationInStorage') ? localStorage.getItem('shortBreakDurationInStorage') : Constants.SHORTBREAK_LENGTH,
+            longBreakDuration: localStorage.getItem('longBreakDurationInStorage') ? localStorage.getItem('longBreakDurationInStorage') : Constants.LONGBREAK_LENGTH,
+            duration: Helper.minutesToSeconds(localStorage.getItem('focusDurationInStorage') ? localStorage.getItem('focusDurationInStorage') : Constants.FOCUS_LENGTH)   
         }
 
         this.updatePhaseToFocus = this.updatePhaseToFocus.bind(this);
@@ -60,26 +57,24 @@ export default class App extends Component{
     updateTimerConfig(event) {
         let durationValues = [...(event.target)];
         let _focusDuration, _shortBreakDuration, _longBreakDuration
-        console.log(durationValues);
-
         durationValues.forEach(function(element) {
-            console.log(element.id);
-            console.log(element.value)
             if (element.type != "submit") {
                 switch (element.id) {
                     case "focus_duration":
                         _focusDuration = element.value;
+                        localStorage.setItem('focusDurationInStorage', element.value);
                         break;
                     case "short_break_duration":
                         _shortBreakDuration = element.value;
+                        localStorage.setItem('shortBreakDurationInStorage', element.value);
                         break;
                     case "long_break_duration":
                         _longBreakDuration = element.value;
+                        localStorage.setItem('longBreakDurationInStorage', element.value);
                         break;
                 }
             }
-          });
-
+        });
         this.setState({
             focusDuration: _focusDuration ? _focusDuration : this.state.focusDuration,
             shortBreakDuration: _shortBreakDuration ? _shortBreakDuration : this.state.shortBreakDuration,
