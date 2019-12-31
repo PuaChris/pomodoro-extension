@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
 
 import * as firebase from 'firebase';
 require("firebase/firestore");
@@ -17,6 +18,5 @@ require("firebase/firestore");
   
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  // firebase.analytics();
 
   export const db = firebase.firestore();
