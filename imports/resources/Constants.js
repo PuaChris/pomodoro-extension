@@ -14,4 +14,6 @@ export const LONGBREAK_LENGTH = 15
 
 export const NUM_POMODOROS_BEFORE_LONGBREAK = 4
 
+export const TEST_USER_ID = 'testemail.com'
+
 
